@@ -1,4 +1,5 @@
 pub mod dom;
+use super::bca_app::dom_app;
 // Breakout Cable Assembly (BCA)
 
 pub struct BCA {
@@ -22,5 +23,12 @@ impl BCA {
             dom_id_list.push(current_bca.get_id());
         }
         dom_id_list
+    }
+    pub fn init_bca_app(&self) -> Vec<dom_app::DomApp> {
+        let mut temp_list: Vec<dom_app::DomApp> = vec![];
+        for current_dom in &self.dom_list {
+            temp_list.push(dom_app::DomApp::new(current_dom.get_id(), false));
+        }
+        temp_list
     }
 }

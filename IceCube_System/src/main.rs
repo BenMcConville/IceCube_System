@@ -4,6 +4,7 @@
 use std::{borrow::BorrowMut, error::Error, io};
 
 use crate::ui::ui;
+use app::App;
 use crossterm::{
     event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, KeyEventKind},
     execute,
@@ -30,9 +31,12 @@ fn main() -> Result<(), Box<dyn Error>> {
     // println!("{:?}", string_01.get_bca_ids());
     // run();
     let IceCube = IceCube_field::IceCubeField::init_IceCube_field();
-    println!("{:?}", IceCube.get_all_dom_strings()[0].get_bca_ids());
-    println!("{:?}", IceCube.get_all_dom_strings()[1].get_bca_ids());
-
+    println!("IceCube Field Strings:");
+    println!("{:?}", IceCube.get_all_dom_strings_id());
+    let App = App::new_app();
+    App.reload_dom_strings(&IceCube);
+    // println!("{:?}", IceCube.get_all_dom_strings()[0].get_bca_ids());
+    // println!("{:?}", IceCube.get_all_dom_strings()[1].get_bca_ids());
     // enable_raw_mode()?;
     // let mut stderr = io::stderr();
     // execute!(stderr, EnterAlternateScreen, EnableMouseCapture)?;

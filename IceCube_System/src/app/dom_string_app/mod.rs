@@ -7,11 +7,11 @@ pub struct StringApp {
     app_bca_list: Vec<bca_app::BcaApp>,
 }
 impl StringApp {
-    pub fn new(reloaded_dom_string: &dom_string::DOMString) -> StringApp {
+    pub fn new(new_dom_string_id: &String, app_bca_list: Vec<bca_app::BcaApp>) -> StringApp {
         StringApp {
             selected_string: false,
-            string_id: String::from(reloaded_dom_string.get_id()),
-            app_bca_list: init_bca_list(reloaded_dom_string.get_bca_ids()),
+            string_id: String::from(new_dom_string_id),
+            app_bca_list: app_bca_list,
         }
     }
 }

@@ -16,10 +16,12 @@ impl App {
             dom_app_strings: vec![],
         }
     }
-    pub fn reload_dom_strings(string_field: &IceCube_field::IceCubeField) {
+    pub fn reload_dom_strings(self, string_field: &IceCube_field::IceCubeField) {
         let mut updated_dom_strings: Vec<dom_string_app::StringApp> = vec![];
+        println!("App Dom_strings:");
         for dom_string in string_field.get_all_dom_strings() {
-            updated_dom_strings.push();
+            println!("{}", dom_string.get_id());
+            // updated_dom_strings.push();
         }
     }
 }

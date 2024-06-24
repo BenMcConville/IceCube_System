@@ -1,8 +1,9 @@
 pub mod dom_string;
+use super::app::dom_string_app;
 
 pub struct IceCubeField {
     name: String,
-    dom_strings: Vec<dom_string::DOMString>,
+    pub dom_strings: Vec<dom_string::DOMString>,
 }
 
 impl IceCubeField {
@@ -12,8 +13,27 @@ impl IceCubeField {
             dom_strings: init_all_strings(10),
         }
     }
+
     pub fn get_all_dom_strings(&self) -> &Vec<dom_string::DOMString> {
         &self.dom_strings
+    }
+    pub fn get_all_dom_strings_id(&self) -> Vec<&String> {
+        let mut temp_list = vec![];
+        for i in &self.dom_strings {
+            temp_list.push(i.get_id());
+        }
+        temp_list
+    }
+
+    pub fn init_dom_strings_app(&self) -> Vec<dom_string_app::StringApp> {
+        let mut temp_list: Vec<dom_string_app::StringApp> = vec![];
+        for current_dom_string in &self.dom_strings {
+            temp_list.push(dom_string_app::StringApp::new(
+                current_dom_string.get_id(),
+                current_dom_string.init_bca_app(),
+            ));
+        }
+        temp_list
     }
 }
 

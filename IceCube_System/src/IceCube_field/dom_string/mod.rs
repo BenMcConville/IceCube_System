@@ -1,8 +1,9 @@
 pub mod bca;
+use super::dom_string_app::bca_app;
 
 pub struct DOMString {
     string_id: String,
-    bca_list: Vec<bca::BCA>,
+    pub bca_list: Vec<bca::BCA>,
 }
 
 impl DOMString {
@@ -28,5 +29,16 @@ impl DOMString {
             dom_list.push(current_bca.get_dom_ids());
         }
         dom_list
+    }
+    pub fn init_bca_app(&self) -> Vec<bca_app::BcaApp> {
+        let mut temp_list: Vec<bca_app::BcaApp> = vec![];
+        for current_bca in &self.bca_list {
+            temp_list.push(bca_app::BcaApp::new(
+                current_bca.get_id(),
+                false,
+                current_bca.init_bca_app(),
+            ));
+        }
+        temp_list
     }
 }
