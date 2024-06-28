@@ -41,4 +41,13 @@ impl DOMString {
         }
         temp_list
     }
+    pub fn all_bcas_operational(&self) -> bool {
+        let mut all_bcas_status = true;
+        for current_bca in &self.bca_list {
+            if !current_bca.all_doms_operational() {
+                all_bcas_status = false;
+            }
+        }
+        all_bcas_status
+    }
 }

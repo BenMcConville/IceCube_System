@@ -35,6 +35,15 @@ impl IceCubeField {
         }
         temp_list
     }
+    pub fn number_of_fully_operational_strings(&self) -> usize {
+        let mut fully_operational_strings: usize = 0;
+        for current_string in &self.dom_strings {
+            if current_string.all_bcas_operational() {
+                fully_operational_strings += 1;
+            }
+        }
+        fully_operational_strings
+    }
 }
 
 fn init_all_strings(number_of_dom_strings: u32) -> Vec<dom_string::DOMString> {

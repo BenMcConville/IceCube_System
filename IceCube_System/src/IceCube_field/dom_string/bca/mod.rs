@@ -31,4 +31,13 @@ impl BCA {
         }
         temp_list
     }
+    pub fn all_doms_operational(&self) -> bool {
+        let mut all_doms_status = true;
+        for current_dom in &self.dom_list {
+            if !*current_dom.get_status() {
+                all_doms_status = false;
+            }
+        }
+        all_doms_status
+    }
 }

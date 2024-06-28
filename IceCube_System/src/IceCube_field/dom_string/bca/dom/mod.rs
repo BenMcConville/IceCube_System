@@ -13,4 +13,7 @@ impl DOM {
     pub fn get_id(&self) -> &String {
         &self.dom_id
     }
+    pub fn get_status(&self) -> &bool {
+        &self.dom_status
+    }
 }

@@ -11,4 +11,16 @@ impl DomApp {
             dom_status: new_dom_status,
         }
     }
+    pub fn get_id(&self) -> String {
+        String::from(&self.dom_id)
+    }
+    pub fn get_status(&self) -> &bool {
+        &self.dom_status
+    }
+    pub fn toggle_selection(&mut self, setting: bool) {
+        self.selected_dom = setting;
+    }
+    pub fn is_selected(&self) -> &bool {
+        &self.selected_dom
+    }
 }
