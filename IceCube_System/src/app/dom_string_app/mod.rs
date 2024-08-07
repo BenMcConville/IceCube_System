@@ -9,9 +9,13 @@ pub struct StringApp {
     pub app_bca_list: Vec<bca_app::BcaApp>,
 }
 impl StringApp {
-    pub fn new(new_dom_string_id: &String, app_bca_list: Vec<bca_app::BcaApp>) -> StringApp {
+    pub fn new(
+        new_dom_string_id: &String,
+        app_bca_list: Vec<bca_app::BcaApp>,
+        is_selected: bool,
+    ) -> StringApp {
         StringApp {
-            selected_string: false,
+            selected_string: is_selected,
             current_list_index: 0,
             is_open: false,
             string_id: String::from(new_dom_string_id),
@@ -44,6 +48,7 @@ impl StringApp {
     pub fn is_selected(&self) -> &bool {
         &self.selected_string
     }
+
     pub fn current_list_index_move_down(&mut self) {
         if *self.app_bca_list[self.current_list_index].get_is_open() {
             self.app_bca_list[self.current_list_index].current_list_index_move_down();

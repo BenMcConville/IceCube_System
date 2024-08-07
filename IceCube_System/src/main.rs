@@ -1,12 +1,17 @@
 // Temp Imports-------------
 #![allow(warnings)]
 
-use std::{borrow::BorrowMut, error::Error, io};
+use serde_json::json;
+use std::fs::File;
+use std::io::{BufWriter, Write};
+use std::{borrow::BorrowMut, error::Error, io, time::Duration};
 
 use crate::ui::ui;
 use app::App;
 use crossterm::{
-    event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, KeyEventKind},
+    event::{
+        self, poll, read, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, KeyEventKind,
+    },
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
@@ -47,50 +52,56 @@ fn main() -> Result<(), Box<dyn Error>> {
     terminal.show_cursor()?;
     Ok(())
 }
-fn run() {
-    //Test for loading current time into program, will be passed into data_stream module
-    let sys_time = SystemTime::now();
+
+fn run_app<B: Backend>(terminal: &mut Terminal<B>, app: &mut App) -> io::Result<bool> {
+    let mut sys_time = SystemTime::now();
     let mut new_sys_time = SystemTime::now();
     loop {
-        match new_sys_time.duration_since(sys_time) {
-            Ok(time) => {
-                if (time.as_secs() > 5) {
-                    break;
+        if poll(Duration::from_micros(5000))? {
+            // Sampling Rate
+            if let Event::Key(key) = event::read()? {
+                if key.code == KeyCode::Char('q') {
+                    return Ok(false);
                 }
-                println!("current Time is: {}", time.as_secs());
+                if key.code == KeyCode::Down {
+                    app.current_list_index_move_down();
+                }
+                if key.code == KeyCode::Up {
+                    app.current_list_index_move_up();
+                }
+                if key.code == KeyCode::Right {
+                    app.open_current_index();
+                }
+                if key.code == KeyCode::Left {
+                    app.close_current_index();
+                }
             }
-            Err(_) => {}
+        } else {
+            terminal.draw(|f| ui(f, app))?;
+            match new_sys_time.duration_since(sys_time) {
+                Ok(time) => {
+                    write_json_file(app.temp_data_sync(15.0 * (time.as_secs_f64())));
+                    //println!("current Time is: {}", time.as_secs());
+                }
+                Err(_) => println!("Error"),
+            }
+            new_sys_time = SystemTime::now();
         }
-        new_sys_time = SystemTime::now();
     }
 }
 
-fn run_app<B: Backend>(terminal: &mut Terminal<B>, app: &mut App) -> io::Result<bool> {
-    loop {
-        terminal.draw(|f| ui(f, app))?;
-
-        if let Event::Key(key) = event::read()? {
-            if key.code == KeyCode::Char('q') {
-                return Ok(false);
-            }
-            if key.code == KeyCode::Down {
-                app.current_list_index_move_down();
-            }
-            if key.code == KeyCode::Up {
-                app.current_list_index_move_up();
-            }
-            if key.code == KeyCode::Right {
-                app.open_current_index();
-            }
-            if key.code == KeyCode::Left {
-                app.close_current_index();
-            }
-            if key.code == KeyCode::Char('a') {
-                app.graph_data.update_data(5.0);
-            }
-            if key.code == KeyCode::Char('b') {
-                app.graph_data.update_data(0.0);
-            }
-        }
-    }
+fn write_json_file(uid: String) -> std::io::Result<()> {
+    // println!("{:?}", read_json_file())
+    let file = File::create("Sensor_Input.json")?;
+    let mut writer = BufWriter::new(file);
+    serde_json::to_writer(
+        &mut writer,
+        &json!({"UID": uid, "x": 0, "y": 0, "Data": 0, "Operational": false, "Updated": false}),
+    )?;
+    writer.flush()?;
+    Ok(())
+}
+fn read_json_file() {
+    let json: serde_json::Value =
+        serde_json::from_str("Sensor_Input.json").expect("JSON was not well-formatted");
 }

@@ -36,7 +36,7 @@ pub fn create_chart(data: &[(f64, f64)]) -> Chart {
     // Create the chart and link all the parts together
 
     Chart::new(vec![Dataset::default()
-        .name("data2")
+        // .name("data2")
         .graph_type(GraphType::Scatter)
         .style(Style::default())
         .data(data)])

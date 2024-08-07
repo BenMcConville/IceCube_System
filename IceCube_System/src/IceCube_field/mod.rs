@@ -27,11 +27,20 @@ impl IceCubeField {
 
     pub fn init_dom_strings_app(&self) -> Vec<dom_string_app::StringApp> {
         let mut temp_list: Vec<dom_string_app::StringApp> = vec![];
-        for current_dom_string in &self.dom_strings {
-            temp_list.push(dom_string_app::StringApp::new(
-                current_dom_string.get_id(),
-                current_dom_string.init_bca_app(),
-            ));
+        for (index, current_dom_string) in self.dom_strings.iter().enumerate() {
+            if index == 0 {
+                temp_list.push(dom_string_app::StringApp::new(
+                    current_dom_string.get_id(),
+                    current_dom_string.init_bca_app(),
+                    true,
+                ));
+            } else {
+                temp_list.push(dom_string_app::StringApp::new(
+                    current_dom_string.get_id(),
+                    current_dom_string.init_bca_app(),
+                    false,
+                ));
+            }
         }
         temp_list
     }

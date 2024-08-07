@@ -32,12 +32,22 @@ impl DOMString {
     }
     pub fn init_bca_app(&self) -> Vec<bca_app::BcaApp> {
         let mut temp_list: Vec<bca_app::BcaApp> = vec![];
-        for current_bca in &self.bca_list {
-            temp_list.push(bca_app::BcaApp::new(
-                current_bca.get_id(),
-                false,
-                current_bca.init_bca_app(),
-            ));
+        for (index, current_bca) in self.bca_list.iter().enumerate() {
+            if index == 0 {
+                temp_list.push(bca_app::BcaApp::new(
+                    current_bca.get_id(),
+                    false,
+                    current_bca.init_bca_app(),
+                    true,
+                ));
+            } else {
+                temp_list.push(bca_app::BcaApp::new(
+                    current_bca.get_id(),
+                    false,
+                    current_bca.init_bca_app(),
+                    false,
+                ));
+            }
         }
         temp_list
     }

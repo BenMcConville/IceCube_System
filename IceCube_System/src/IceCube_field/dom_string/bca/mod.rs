@@ -26,8 +26,12 @@ impl BCA {
     }
     pub fn init_bca_app(&self) -> Vec<dom_app::DomApp> {
         let mut temp_list: Vec<dom_app::DomApp> = vec![];
-        for current_dom in &self.dom_list {
-            temp_list.push(dom_app::DomApp::new(current_dom.get_id(), false));
+        for (index, current_dom) in self.dom_list.iter().enumerate() {
+            if index == 0 {
+                temp_list.push(dom_app::DomApp::new(current_dom.get_id(), false, true));
+            } else {
+                temp_list.push(dom_app::DomApp::new(current_dom.get_id(), false, false));
+            }
         }
         temp_list
     }

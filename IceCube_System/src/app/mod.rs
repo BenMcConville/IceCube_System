@@ -22,19 +22,51 @@ impl App {
             graph_data: graph_data::Graph::new(),
         }
     }
+    fn get_selected_dom(&self) -> String {
+        for i in self.dom_app_strings.iter() {
+            if *i.get_is_open() {
+                for j in i.app_bca_list.iter() {
+                    if *j.get_is_open() {
+                        for d in j.bca_doms.iter() {
+                            if *d.is_selected() {
+                                return d.get_id();
+                            }
+                        }
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        return String::from("None");
+    }
     pub fn get_graph_data(&self) -> &[(f64, f64); 200] {
         &self.graph_data.get_data_points()
     }
-    pub fn temp_data_sync(&mut self, time: f64) {
-        self.graph_data.update_data(time.sin());
+    pub fn temp_data_sync(&mut self, time: f64) -> String {
+        if self.get_selected_dom().trim() == "None" {
+            self.graph_data.update_data(0.0);
+        } else {
+            self.graph_data.update_data(time.cos() * 3.0 + 5.0);
+        }
+        return self.get_selected_dom();
     }
     pub fn reload_dom_strings(&mut self, string_field: &IceCube_field::IceCubeField) {
         let mut updated_dom_strings: Vec<dom_string_app::StringApp> = vec![];
-        for dom_string in string_field.get_all_dom_strings() {
-            updated_dom_strings.push(dom_string_app::StringApp::new(
-                dom_string.get_id(),
-                dom_string.init_bca_app(),
-            ));
+        for (index, dom_string) in string_field.get_all_dom_strings().iter().enumerate() {
+            if index == 0 {
+                updated_dom_strings.push(dom_string_app::StringApp::new(
+                    dom_string.get_id(),
+                    dom_string.init_bca_app(),
+                    true,
+                ));
+            } else {
+                updated_dom_strings.push(dom_string_app::StringApp::new(
+                    dom_string.get_id(),
+                    dom_string.init_bca_app(),
+                    false,
+                ));
+            }
         }
         self.dom_app_strings = updated_dom_strings;
     }

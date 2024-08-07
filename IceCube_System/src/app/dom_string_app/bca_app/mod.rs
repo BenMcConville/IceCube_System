@@ -13,9 +13,10 @@ impl BcaApp {
         new_bca_id: &String,
         new_bca_status: bool,
         dom_list: Vec<dom_app::DomApp>,
+        is_selected: bool,
     ) -> BcaApp {
         BcaApp {
-            selected_bca: false,
+            selected_bca: is_selected,
             current_list_index: 0,
             is_open: false,
             bca_id: String::from(new_bca_id),

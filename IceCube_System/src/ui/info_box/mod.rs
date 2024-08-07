@@ -43,7 +43,7 @@ fn dom_info_box(app: &mut App) -> Paragraph {
         Line::from(""),
         Line::from(vec![
             Span::styled(
-                "   Selected String: ",
+                "    Selected String:   ",
                 Style::default().fg(ratatui::style::Color::White),
             ),
             Span::styled(
@@ -53,7 +53,7 @@ fn dom_info_box(app: &mut App) -> Paragraph {
         ]),
         Line::from(vec![
             Span::styled(
-                "   Selected Bca: ",
+                "    Selected Bca:      ",
                 Style::default().fg(ratatui::style::Color::White),
             ),
             Span::styled(
@@ -65,7 +65,7 @@ fn dom_info_box(app: &mut App) -> Paragraph {
         ]),
         Line::from(vec![
             Span::styled(
-                ">>   Selected Dom: ",
+                " >> Selected Dom:      ",
                 Style::default().fg(ratatui::style::Color::White),
             ),
             Span::styled(
@@ -75,7 +75,7 @@ fn dom_info_box(app: &mut App) -> Paragraph {
                     [app.dom_app_strings[app.current_list_index].current_list_index]
                     .current_list_index]
                     .get_id(),
-                Style::default().fg(ratatui::style::Color::White),
+                Style::default().fg(ratatui::style::Color::LightRed),
             ),
         ]),
     ]))
@@ -97,7 +97,7 @@ fn bca_info_box(app: &mut App) -> Paragraph {
         Line::from(""),
         Line::from(vec![
             Span::styled(
-                "   Selected String: ",
+                "    Selected String:   ",
                 Style::default().fg(ratatui::style::Color::White),
             ),
             Span::styled(
@@ -107,14 +107,14 @@ fn bca_info_box(app: &mut App) -> Paragraph {
         ]),
         Line::from(vec![
             Span::styled(
-                ">>   Selected Bca: ",
+                " >> Selected Bca:      ",
                 Style::default().fg(ratatui::style::Color::White),
             ),
             Span::styled(
                 app.dom_app_strings[app.current_list_index].app_bca_list
                     [app.dom_app_strings[app.current_list_index].current_list_index]
                     .get_id(),
-                Style::default().fg(ratatui::style::Color::White),
+                Style::default().fg(ratatui::style::Color::LightRed),
             ),
         ]),
     ]))
@@ -136,12 +136,12 @@ fn iceCube_field_info_box(app: &mut App) -> Paragraph {
         Line::from(""),
         Line::from(vec![
             Span::styled(
-                ">>   Selected String: ",
+                " >> Selected String:   ",
                 Style::default().fg(ratatui::style::Color::White),
             ),
             Span::styled(
                 app.dom_app_strings[app.current_list_index].get_id(),
-                Style::default().fg(ratatui::style::Color::White),
+                Style::default().fg(ratatui::style::Color::LightRed),
             ),
         ]),
     ]))
