@@ -22,7 +22,7 @@ impl App {
             graph_data: graph_data::Graph::new(),
         }
     }
-    fn get_selected_dom(&self) -> String {
+    pub fn get_selected_dom(&self) -> String {
         for i in self.dom_app_strings.iter() {
             if *i.get_is_open() {
                 for j in i.app_bca_list.iter() {
@@ -43,11 +43,11 @@ impl App {
     pub fn get_graph_data(&self) -> &[(f64, f64); 200] {
         &self.graph_data.get_data_points()
     }
-    pub fn temp_data_sync(&mut self, time: f64) -> String {
+    pub fn temp_data_sync(&mut self, data: f64) -> String {
         if self.get_selected_dom().trim() == "None" {
             self.graph_data.update_data(0.0);
         } else {
-            self.graph_data.update_data(time.cos() * 3.0 + 5.0);
+            self.graph_data.update_data(data);
         }
         return self.get_selected_dom();
     }

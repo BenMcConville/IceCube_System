@@ -1,7 +1,8 @@
 // Temp Imports-------------
 #![allow(warnings)]
 
-use serde_json::json;
+use serde_json::{json, Value};
+use std::fs;
 use std::fs::File;
 use std::io::{BufWriter, Write};
 use std::{borrow::BorrowMut, error::Error, io, time::Duration};
@@ -80,7 +81,8 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, app: &mut App) -> io::Result<
             terminal.draw(|f| ui(f, app))?;
             match new_sys_time.duration_since(sys_time) {
                 Ok(time) => {
-                    write_json_file(app.temp_data_sync(15.0 * (time.as_secs_f64())));
+                    let val: f64 = write_json_file(app.get_selected_dom()).unwrap();
+                    app.temp_data_sync(val);
                     //println!("current Time is: {}", time.as_secs());
                 }
                 Err(_) => println!("Error"),
@@ -90,18 +92,33 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, app: &mut App) -> io::Result<
     }
 }
 
-fn write_json_file(uid: String) -> std::io::Result<()> {
-    // println!("{:?}", read_json_file())
-    let file = File::create("Sensor_Input.json")?;
-    let mut writer = BufWriter::new(file);
-    serde_json::to_writer(
-        &mut writer,
-        &json!({"UID": uid, "x": 0, "y": 0, "Data": 0, "Operational": false, "Updated": false}),
-    )?;
-    writer.flush()?;
-    Ok(())
+fn write_json_file(uid: String) -> std::io::Result<f64> {
+    let mut val: f64 = read_json_file_val();
+    if read_json_file_update() {
+        let file = File::create("Sensor_Input.json")?;
+        let mut writer = BufWriter::new(file);
+        serde_json::to_writer(
+            &mut writer,
+            &json!({"UID": uid, "x": 0, "y": 0, "Data": 0.0, "Operational": false, "Updated": false}),
+        )?;
+        writer.flush()?;
+    }
+    Ok(val)
 }
-fn read_json_file() {
+fn read_json_file_update() -> bool {
+    let contents =
+        fs::read_to_string("Sensor_Input.json").expect("Couldn't find or load that file.");
+    let json: Result<Value, serde_json::Error> = serde_json::from_str(&contents);
+    match json {
+        Ok(data) => return data["Updated"].as_bool().unwrap(),
+        _ => return false,
+    }
+}
+
+fn read_json_file_val() -> f64 {
+    let contents =
+        fs::read_to_string("Sensor_Input.json").expect("Couldn't find or load that file.");
     let json: serde_json::Value =
-        serde_json::from_str("Sensor_Input.json").expect("JSON was not well-formatted");
+        serde_json::from_str(&contents).expect("JSON was not well-formatted");
+    return json["Data"].as_f64().unwrap();
 }
