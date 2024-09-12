@@ -1,5 +1,5 @@
 import json
-
+import math
 
 
 def read_json():
@@ -26,13 +26,15 @@ def write_json(file, data: float, status: bool, updated: bool):
 
 
 if __name__ == '__main__':
+    time = 0.0
     while True:
+        time += 0.0001
         json_data = read_json()
         if json_data == None:
             write_json('Sensor_Input.json', data=0.0, status=False, updated=False)        
             print("Json_Data Not Configed")
   
         elif 'Updated' in json_data and not(json_data['Updated']):
-            write_json('Sensor_Input.json', data=5.0, status=True, updated=True)
+            write_json('Sensor_Input.json', data=(5*math.sin(time)) + 5, status=True, updated=True)
             print("Write sensor data")
         
