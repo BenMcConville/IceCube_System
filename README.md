@@ -2,7 +2,7 @@
 
 IceCube System is for generating a visual interface for monitoring DOM sensors and High Energy Muon detection.
 
-![Main IceCube_System Page](img/main.png "Title")
+![Main IceCube_System Page](img/main.png "Main")
 
 
 ## Installation
@@ -24,6 +24,7 @@ When running (Rust) script for first time Cargo will install the following depen
 - serde_json = "1.0"
 
 ## Usage
+1.
 From git directory /IceCube_System
 ```bash
 cd IceCube_System
@@ -40,3 +41,5 @@ cargo run
 ```
 Once the rust ui is displayed you can enter the previous terminal and enter y. Using the arrow keys you can view the individual doms to view the generated data.
 
+![Main IceCube_System Page](img/data_gen.png "Data Gen")
+Main page with generated data from python script.
