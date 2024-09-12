@@ -24,7 +24,6 @@ When running (Rust) script for first time Cargo will install the following depen
 - serde_json = "1.0"
 
 ## Usage
-1.
 From git directory /IceCube_System
 ```bash
 cd IceCube_System
